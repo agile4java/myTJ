@@ -1,4 +1,4 @@
-var request = indexedDB.open('mobilediary', 1);
+var request = indexedDB.open('myTJ', 1);
 
 request.onupgradeneeded = function (event) {
   var db = event.target.result;
@@ -28,15 +28,15 @@ request.onsuccess = function (event) {
   // Get All Subjects
   getSubjects();
 
-  mobileDiary.onPageInit('index', function (page) {
+  myTJ.onPageInit('index', function (page) {
     getSubjects();
   });
 
-  mobileDiary.onPageInit('new-entry', function (page) {
+  myTJ.onPageInit('new-entry', function (page) {
     getSubjectList();
   });
 
-  mobileDiary.onPageInit('new-entry', function (page) {
+  myTJ.onPageInit('new-entry', function (page) {
     // Get Formatted Current Date
     Date.prototype.toDateInputValue = (function () {
       var local = new Date(this);
@@ -161,7 +161,7 @@ function addEntry() {
 
 // Get and Display Entries
 function getEntries(subjectID) {
-  mobileDiary.onPageInit('entries', function (page) {
+  myTJ.onPageInit('entries', function (page) {
     getSubjectTitle(subjectID);
     var transaction = db.transaction(['entries'], 'readonly');
     var store = transaction.objectStore('entries');
@@ -204,7 +204,7 @@ function getSubjectTitle(subjectID) {
 
 // Get Entry
 function getEntry(entryID) {
-  mobileDiary.onPageInit('entry', function (page) {
+  myTJ.onPageInit('entry', function (page) {
     var transaction = db.transaction(['entries'], 'readonly');
     var store = transaction.objectStore('entries');
     var request = store.get(entryID);
