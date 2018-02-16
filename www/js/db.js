@@ -36,17 +36,17 @@ request.onsuccess = function (event) {
     getSubjectList();
   });
 
-  // mobileDiary.onPageInit('new-entry', function (page) {
-  //   // Get Formatted Current Date
-  //   Date.prototype.toDateInputValue = (function () {
-  //     var local = new Date(this);
-  //     local.setMinutes(this.getMinutes() - this.getTimezoneOffset());
-  //     return local.toJSON().slice(0, 10);
-  //   });
+  mobileDiary.onPageInit('new-entry', function (page) {
+    // Get Formatted Current Date
+    Date.prototype.toDateInputValue = (function () {
+      var local = new Date(this);
+      local.setMinutes(this.getMinutes() - this.getTimezoneOffset());
+      return local.toJSON().slice(0, 10);
+    });
 
-    // Display Current Date in Date Field
-  //   $('#datePicker').val(new Date().toDateInputValue());
-  // });
+  // Display Current Date in Date Field
+    $('#datePicker').val(new Date().toDateInputValue());
+  });
 }
 
 request.onerror = function (event) {
@@ -126,3 +126,78 @@ function getSubjectList(current) {
   }
 }
 
+// Add Entry
+function addEntry() {
+  var title = $('#title').val();
+  var subject = $('#subjectSelect').val();
+  var date = $('#datePicker').val();
+  var body = $('#body').val();
+
+  var transaction = db.transaction(['entries'], 'readwrite');
+
+  var store = transaction.objectStore('entries');
+
+  //Define Store
+  var entry = {
+    title: title,
+    subject: subject,
+    date: date,
+    body: body
+  };
+
+  // Perfomr the add
+  var request = store.add(entry);
+
+  //Success
+  request.onsuccess = function (event) {
+    console.log('Entry Added!');
+  }
+
+  //Fail
+  request.onerror = function (event) {
+    console.log('There Was An Error!');
+  }
+}
+
+// Get and Display Entries
+function getEntries(subjectID) {
+  mobileDiary.onPageInit('entries', function (page) {
+    getSubjectTitle(subjectID);
+    var transaction = db.transaction(['entries'], 'readonly');
+    var store = transaction.objectStore('entries');
+    var index = store.index('title');
+
+    var output = '';
+    index.openCursor().onsuccess = function (event) {
+      var cursor = event.target.result;
+      if (cursor) {
+        if (cursor.value.subject == subjectID) {
+          output += '<li><a onclick="getEntries(' + cursor.value.id + ')" href="entries.html" class="item-link">' +
+            '<div class="item-content">' +
+            '<div class="item-inner"> ' +
+            '<div class="item-title">' + cursor.value.title + '</div>' +
+            '</div>' +
+            '</div></a></li>';
+        }
+        cursor.continue();
+      }
+      $('#entryList').html(output);
+    }
+
+  });
+}
+
+// Get Subject title
+function getSubjectTitle(subjectID){
+
+  var transaction = db.transaction(['subjects'], 'readonly');
+  var store = transaction.objectStore('subjects');
+  var request = store.get(subjectID);
+
+  request.onsuccess = function(event){
+    var subjectTitle = request.result.title;
+    $('#subjectTitle').html(subjectTitle);
+
+  };
+
+}
