@@ -17,6 +17,7 @@ request.onupgradeneeded = function (event) {
 request.onsuccess = function (event) {
   console.log('Success: Database Opened!');
   db = event.target.result;
+  getEntries();
 
  
 
@@ -80,7 +81,8 @@ function addEntry() {
 
 // Get and Display Entries
 function getEntries() {
-  myTJ.onPageInit('entries', function (page) {
+  console.log("Getting Entries....");
+  
     
     var transaction = db.transaction(['entries'], 'readonly');
     var store = transaction.objectStore('entries');
@@ -103,7 +105,7 @@ function getEntries() {
       $('#entryList').html(output);
     }
 
-  });
+  
 }
 
 
