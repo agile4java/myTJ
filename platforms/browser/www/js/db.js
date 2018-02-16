@@ -96,7 +96,7 @@ function getEntries() {
           output += '<li><a onclick="getEntry(' + cursor.value.id + ')" href="entry.html" class="item-link">' +
             '<div class="item-content">' +
             '<div class="item-inner"> ' +
-            '<div class="item-title">' + cursor.value.title + '</div>' +
+            '<div class="item-title"><strong class="myTJ-text">' + cursor.value.title + '</strong></div>' +
             '</div>' +
             '</div></a></li>';
         // }
