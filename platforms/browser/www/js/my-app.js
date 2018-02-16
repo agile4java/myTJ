@@ -1,17 +1,17 @@
 // Initialize your app
-var mobileDiary = new Framework7();
+var myTJ = new Framework7();
 
 // Export selectors engine
 var $$ = Dom7;
 
 // Add view
-var mainView = mobileDiary.addView('.view-main', {
+var mainView = myTJ.addView('.view-main', {
     // Because we use fixed-through navbar we can enable dynamic navbar
     dynamicNavbar: true
 });
 
 // Callbacks to run specific code for specific pages, for example for About page:
-mobileDiary.onPageInit('about', function (page) {
+myTJ.onPageInit('about', function (page) {
     // run createContentPage func after link was clicked
     $$('.create-page').on('click', function () {
         createContentPage();

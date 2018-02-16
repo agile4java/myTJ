@@ -1,10 +1,11 @@
 <?xml version='1.0' encoding='utf-8'?>
 <widget id="com.phonegap.mobilediary" version="1.0.0" xmlns="http://www.w3.org/ns/widgets" xmlns:cdv="http://cordova.apache.org/ns/1.0" xmlns:gap="http://phonegap.com/ns/1.0">
-    <name>MobileDiary</name>
-    <description>
-        Diary or Journal on your mobile device
+    <name>myTJ</name>
+    <description> 
+    A travel journal app for your mobile device.  Capture notes, locations, pictures, and videos.  
+    Works offline too!
     </description>
-    <author email="support@phonegap.com" href="http://phonegap.com">
+    <author email="agile4java@gmail.com" href="http://phonegap.com">
        Chad Conway
     </author>
     <content src="index.html" />

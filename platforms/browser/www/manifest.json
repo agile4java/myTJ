@@ -1,10 +1,10 @@
 {
   "background_color": "#FFF",
   "display": "standalone",
-  "name": "MobileDiary",
-  "short_name": "MobileDiary",
+  "name": "myTJ",
+  "short_name": "myTJ",
   "version": "com.phonegap.mobilediary",
-  "description": "Diary or Journal on your mobile device",
+  "description": "A travel journal app for your mobile device.  Capture notes, locations, pictures, and videos.  \r\n    Works offline too!",
   "author": "Chad Conway",
   "icons": [
     {
