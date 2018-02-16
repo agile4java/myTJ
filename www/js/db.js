@@ -1,67 +1,104 @@
-var db;
+var request = indexedDB.open('mobilediary', 1);
 
-var DBOpenRequest = indexedDB.open('mobilediary', 1);
+request.onupgradeneeded = function(event){
+	var db = event.target.result;
 
-DBOpenRequest.onsuccess = function(event){
-  console.log('Success: Database Opened');
-  db = DBOpenRequest.result;
-};
+	// Subjects Table
+	if(!db.objectStoreNames.contains('subjects')){
+		var subjectsOS = db.createObjectStore('subjects', {keyPath: 'id', autoIncrement: true});
 
-DBOpenRequest.onerror = function(event){
-  console.log('Error: Database Not Opened');
-};
+		subjectsOS.createIndex('title', 'title', {unique:false});
+	}
 
+	// Entries Table
+	if(!db.objectStoreNames.contains('entries')){
+		var entriesOS = db.createObjectStore('entries', {keyPath: 'id', autoIncrement: true});
 
+		entriesOS .createIndex('title', 'title', {unique:false});
+		entriesOS .createIndex('subject', 'subject', {unique:false});
+		entriesOS .createIndex('date', 'date', {unique:false});
+		entriesOS .createIndex('body', 'body', {unique:false});
+	}
+}
 
+request.onsuccess = function(event){
+	console.log('Success: Database Opened!');
+	db = event.target.result;
 
-DBOpenRequest.onupgradeneeded = function(event){
-  var db = event.target.result;
+	// Get All Subjects
+	getSubjects();
 
-  db.onerror = function(event){
-    console.log('Error in on upgraded needed');
-  };
+	mobileDiary.onPageInit('index', function (page) {
+   		getSubjects();
+	});
 
-  // subjects object store
-  if(!db.objectStoreNames.contains('subjects')){
-    var subjectsOS = db.createObjectStore('subjects', {keyPath: 'id', autoIncrement: true});
+	mobileDiary.onPageInit('new-entry', function (page) {
+   		getSubjectList();
+	});
 
-    subjectsOS.createIndex('title', 'title', {unique: false});
+	mobileDiary.onPageInit('new-entry', function (page) {
+   		// Get Formatted Current Date
+   		Date.prototype.toDateInputValue = (function() {
+	        var local = new Date(this);
+	        local.setMinutes(this.getMinutes() - this.getTimezoneOffset());
+	        return local.toJSON().slice(0,10);
+	    });
 
-  }
-  // entries object store
-  if(!db.objectStoreNames.contains('entries')){
-    var entriesOS = db.createObjectStore('entries', {keyPath: 'id', autoIncrement: true});
+	   // Display Current Date in Date Field
+	   $('#datePicker').val(new Date().toDateInputValue());
+	});
+}
 
-    entriesOS.createIndex('title', 'title', {unique: false});
-    entriesOS.createIndex('subject', 'subject', {unique: false});
-    entriesOS.createIndex('date', 'date', {unique: false});
-    entriesOS.createIndex('body', 'body', {unique: false});
-  }
-};
-
-
+request.onerror = function(event){
+	console.log('Error: Database NOT Opened!');
+}
 
 function addSubject(){
-  var title = $('#title').val();
+	var title = $('#title').val();
 
-  var transaction = db.transaction(['subjects'], 'readwrite');
+	var transaction = db.transaction(['subjects'],'readwrite');
 
-  var store = transaction.objectStore('subjects');
+	var store = transaction.objectStore('subjects');
 
-  // define store
-  var subject = {
-    title: title
-  };
+	//Define Store
+	var subject= {
+		title: title
+	}
 
-  // perform add
-  var objectStoreRequest = store.add(subject);
+	// Perfomr the add
+	var request = store.add(subject);
 
-  // success
-  objectStoreRequest.onsuccess = function(event){
-    console.log('subject added');
-  };
-  // fail
-  objectStoreRequest.onerror = function(event){
-    console.log('There was an error');
-  };
+	//Success
+	request.onsuccess = function(event){
+		console.log('Subject Added!');
+	}
+
+	//Fail
+	request.onerror = function(event){
+		console.log('There Was An Error!');
+	}
+}
+
+
+function getSubjects(){
+	console.log('Fetching Subjects...');
+
+	var transaction = db.transaction(['subjects'],'readonly');
+	var store = transaction.objectStore('subjects');
+	var index = store.index('title');
+
+	var output = '';
+	index.openCursor().onsuccess = function(event){
+		var cursor = event.target.result;
+		if(cursor){
+			output += '<li><a onclick="getEntries("+cursor.value.id+")" href="entries.html" class="item-link">'+
+                      '<div class="item-content">'+
+                        '<div class="item-inner"> '+
+                         '<div class="item-title">'+cursor.value.title+'</div>'+
+                        '</div>'+
+                      '</div></a></li>';
+            cursor.continue();
+		}
+		$('#subjectList').html(output);
+	}
 }
