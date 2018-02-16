@@ -44,7 +44,7 @@ request.onsuccess = function (event) {
       return local.toJSON().slice(0, 10);
     });
 
-  // Display Current Date in Date Field
+    // Display Current Date in Date Field
     $('#datePicker').val(new Date().toDateInputValue());
   });
 }
@@ -172,7 +172,7 @@ function getEntries(subjectID) {
       var cursor = event.target.result;
       if (cursor) {
         if (cursor.value.subject == subjectID) {
-          output += '<li><a onclick="getEntries(' + cursor.value.id + ')" href="entries.html" class="item-link">' +
+          output += '<li><a onclick="getEntry(' + cursor.value.id + ')" href="entry.html" class="item-link">' +
             '<div class="item-content">' +
             '<div class="item-inner"> ' +
             '<div class="item-title">' + cursor.value.title + '</div>' +
@@ -188,16 +188,31 @@ function getEntries(subjectID) {
 }
 
 // Get Subject title
-function getSubjectTitle(subjectID){
+function getSubjectTitle(subjectID) {
 
   var transaction = db.transaction(['subjects'], 'readonly');
   var store = transaction.objectStore('subjects');
   var request = store.get(subjectID);
 
-  request.onsuccess = function(event){
+  request.onsuccess = function (event) {
     var subjectTitle = request.result.title;
     $('#subjectTitle').html(subjectTitle);
 
   };
 
+}
+
+// Get Entry
+function getEntry(entryID) {
+  mobileDiary.onPageInit('entry', function (page) {
+    var transaction = db.transaction(['entries'], 'readonly');
+    var store = transaction.objectStore('entries');
+    var request = store.get(entryID);
+
+    request.onsuccess = function (event) {
+      $('#entryTitle').html(request.result.title);
+      $('#entryDate').html(request.result.date);
+      $('#entryBody').html(request.result.body);
+    };
+  });
 }
