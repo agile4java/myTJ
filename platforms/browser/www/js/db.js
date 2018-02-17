@@ -87,6 +87,11 @@ function getEntries() {
     var transaction = db.transaction(['entries'], 'readonly');
     var store = transaction.objectStore('entries');
     var index = store.index('title');
+    var entriesFromIDB = {
+      title: title,
+      date: date,
+      body: body
+    };
 
     var output = '';
     index.openCursor().onsuccess = function (event) {
