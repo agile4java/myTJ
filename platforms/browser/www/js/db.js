@@ -87,16 +87,34 @@ function getEntries() {
     var transaction = db.transaction(['entries'], 'readonly');
     var store = transaction.objectStore('entries');
     var index = store.index('title');
-    var entriesFromIDB = {
+    var id = 1;
+    var title = new String();
+    var date = date;
+    var body = new String();
+    var entry = {
       title: title,
       date: date,
       body: body
     };
-
-    var output = '';
+  
+    var entriesArray = [];
     index.openCursor().onsuccess = function (event) {
       var cursor = event.target.result;
       if (cursor) {
+        
+        entry.title = cursor.value.title;
+        entry.date = cursor.value.date;
+        entry.body = cursor.value.body;
+        console.log("entriesArray at index= "+ id + " =");
+        console.log("title = "+ entry.title);
+        console.log("date = "+ entry.date);
+        console.log("body = "+ entry.body);
+        id++;
+        cursor.continue();
+
+      }
+    var output = '';
+    
           output += 
          ' <div class="card myTJ-secondary">'+
          '     <div class="card-header myTJ-secondary-dark myTJ-text"><h2>'+
@@ -104,39 +122,9 @@ function getEntries() {
          '       <div class="card-content card-content-padding">'+  
          '            <h2 class="myTJ-secondary myTJ-text-dark">'+cursor.value.body+'</h2></div>'+
          '           <div class="card-footer myTJ-secondary-dark myTJ-text">Posted on '+cursor.value.date+'</div>'+
-         '       </div>                      '
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-        // if (cursor.value.id == subjectID) {
-          // output += '<li><a onclick="getEntry(' + cursor.value.id + ')" href="entry.html" class="item-link">' +
-          //   '<div class="item-content">' +
-          //   '<div class="item-inner"> ' +
-          //   '<div class="item-title"><strong class="myTJ-text">' + cursor.value.title + '</strong></div>' +
-          //   '</div>' +
-          //   '</div></a></li>';
-        // }
-        cursor.continue();
-      }
+         '       </div>                      '     
+       
+    
       $('#entryList').html(output);
     }
 
