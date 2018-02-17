@@ -19,14 +19,14 @@ request.onsuccess = function (event) {
   db = event.target.result;
   getEntries();
 
- 
+
 
   myTJ.onPageInit('index', function (page) {
-   
+
   });
 
   myTJ.onPageInit('new-entry', function (page) {
-    
+
   });
 
   myTJ.onPageInit('new-entry', function (page) {
@@ -50,7 +50,7 @@ request.onerror = function (event) {
 // Add Entry
 function addEntry() {
   var title = $('#title').val();
-  
+
   var date = $('#datePicker').val();
   var body = $('#body').val();
 
@@ -82,53 +82,56 @@ function addEntry() {
 // Get and Display Entries
 function getEntries() {
   console.log("Getting Entries....");
-  
-    
-    var transaction = db.transaction(['entries'], 'readonly');
-    var store = transaction.objectStore('entries');
-    var index = store.index('title');
-    var id = 1;
-    var title = new String();
-    var date = date;
-    var body = new String();
-    var entry = {
-      title: title,
-      date: date,
-      body: body
-    };
-  
-    var entriesArray = [];
-    index.openCursor().onsuccess = function (event) {
-      var cursor = event.target.result;
-      if (cursor) {
-        
-        entry.title = cursor.value.title;
-        entry.date = cursor.value.date;
-        entry.body = cursor.value.body;
-        console.log("entriesArray at index= "+ id + " =");
-        console.log("title = "+ entry.title);
-        console.log("date = "+ entry.date);
-        console.log("body = "+ entry.body);
-        id++;
-        cursor.continue();
 
+
+  // var transaction = db.transaction(['entries'], 'readonly');
+  // var store = transaction.objectStore('entries');
+  // var index = store.index('title');
+  var id = 1;
+  var title = new String();
+  var date = date;
+  var body = new String();
+  var entry = {
+    title: title,
+    date: date,
+    body: body
+  };
+
+  var entriesArray = [];
+
+  var transaction = db.transaction(['entries'], "readonly");
+  var objectStore = transaction.objectStore('entries');
+
+
+  objectStore.openCursor().onsuccess = function (event) {
+    var cursor = event.target.result;
+    if (cursor) {
+
+      entry.title = cursor.value.title;
+      entry.date = cursor.value.date;
+      entry.body = cursor.value.body;
+
+      entriesArray.push(entry);
+      cursor.continue();
+    } else {
+      var output = '';
+      for (j = 0; j < entriesArray.length; j++) {
+        console.log("entriesArray at index =" + j);
+        console.log(entriesArray[j]);
+        output +=
+          ' <div class="card myTJ-secondary">' +
+          '     <div class="card-header myTJ-secondary-dark myTJ-text"><h2>' +
+          entriesArray[j].title + '</h2></div> ' +
+          '       <div class="card-content card-content-padding">' +
+          '            <h2 class="myTJ-secondary myTJ-text-dark">' + entriesArray[j].body + '</h2></div>' +
+          '           <div class="card-footer myTJ-secondary-dark myTJ-text">Posted on ' + entriesArray[j].date + '</div>' +
+          '       </div>'
       }
-    var output = '';
-    
-          output += 
-         ' <div class="card myTJ-secondary">'+
-         '     <div class="card-header myTJ-secondary-dark myTJ-text"><h2>'+
-         cursor.value.title+'</h2></div> '+
-         '       <div class="card-content card-content-padding">'+  
-         '            <h2 class="myTJ-secondary myTJ-text-dark">'+cursor.value.body+'</h2></div>'+
-         '           <div class="card-footer myTJ-secondary-dark myTJ-text">Posted on '+cursor.value.date+'</div>'+
-         '       </div>                      '     
-       
-    
+
       $('#entryList').html(output);
     }
+  }
 
-  
 }
 
 
