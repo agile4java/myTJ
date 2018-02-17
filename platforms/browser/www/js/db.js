@@ -106,13 +106,21 @@ function getEntries() {
   objectStore.openCursor().onsuccess = function (event) {
     var cursor = event.target.result;
     if (cursor) {
-
+      var entry = {
+        title: title,
+        date: date,
+        body: body
+      };
+      console.log("Entry id = " + cursor.value.id);
+      console.log("Entry title = " + cursor.value.title);
       entry.title = cursor.value.title;
       entry.date = cursor.value.date;
       entry.body = cursor.value.body;
 
+     
       entriesArray.push(entry);
       cursor.continue();
+     
     } else {
       var output = '';
       for (j = 0; j < entriesArray.length; j++) {
