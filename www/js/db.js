@@ -92,13 +92,43 @@ function getEntries() {
     index.openCursor().onsuccess = function (event) {
       var cursor = event.target.result;
       if (cursor) {
+          output += 
+         ' <div class="card myTJ-secondary">'+
+         '     <div class="card-header myTJ-secondary-dark myTJ-text"><h2>'+
+         cursor.value.title+'</h2></div> '+
+         '       <div class="card-content card-content-padding">'+  
+         '            <h2 class="myTJ-secondary myTJ-text-dark">'+cursor.value.body+'</h2></div>'+
+         '           <div class="card-footer myTJ-secondary-dark myTJ-text">Posted on '+cursor.value.date+'</div>'+
+         '       </div>                      '
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
         // if (cursor.value.id == subjectID) {
-          output += '<li><a onclick="getEntry(' + cursor.value.id + ')" href="entry.html" class="item-link">' +
-            '<div class="item-content">' +
-            '<div class="item-inner"> ' +
-            '<div class="item-title"><strong class="myTJ-text">' + cursor.value.title + '</strong></div>' +
-            '</div>' +
-            '</div></a></li>';
+          // output += '<li><a onclick="getEntry(' + cursor.value.id + ')" href="entry.html" class="item-link">' +
+          //   '<div class="item-content">' +
+          //   '<div class="item-inner"> ' +
+          //   '<div class="item-title"><strong class="myTJ-text">' + cursor.value.title + '</strong></div>' +
+          //   '</div>' +
+          //   '</div></a></li>';
         // }
         cursor.continue();
       }

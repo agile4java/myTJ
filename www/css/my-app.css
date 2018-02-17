@@ -1,35 +1,32 @@
-h1{
-  
-  font-family: "Verdana", sans-serif;
-  color: #000000;
-  background-color: #0043ca;
-}
 
-.myTJ-toolbar{
-  color: #000000;
-  background-color: #0043ca;
-  border: 1px solid #0043ca;
-}
-
-.myTJ-light{
-  color: #000000;
-  background-color: #8f9bff;
-}
 
 .myTJ-text{
   font-family: bold "Verdana" sans-serif;
-  color: #000000;
+  color: #eee4e4;
+}
+.myTJ-text-dark{
+  font-family: bold "Verdana" sans-serif;
+  color: #212121;
 }
 
-.myTJ-content{
-  background-color: #536dfe;
 
+.myTJ-primary{
+  
+  background-color: #424242;
 }
 
-.myTJ-border{
-  border: 1px solid #0043ca;
+.myTJ-primary-dark{
+  background-color: #212121;
 }
-
-.myTJ-border-light{
-  border: 1px solid #8f9bff;
+.myTJ-primary-light{
+  background-color: #EEEEEE;
+}
+.myTJ-secondary{
+  background-color: #757575;
+}
+.myTJ-secondary-dark{
+  background-color: #616161;
+}
+.myTJ-secondary-light{
+  background-color: #F5F5F5;
 }

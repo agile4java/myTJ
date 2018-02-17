@@ -35,11 +35,11 @@
     <!-- Your main view, should have "view-main" class-->
     <div class="view view-main">
       <!-- Top Navbar-->
-      <div class="navbar myTJ-toolbar">
-        <div class="navbar-inner">
+      <div class="navbar myTJ-primary-dark">
+        <div class="navbar-inner  myTJ-primary-dark">
           <!-- We have home navbar without left link-->
           <div class="center sliding">
-            <h1>myTJ</h1>
+            <h1 class="myTJ-text">myTJ</h1>
           </div>
 
         </div>
@@ -49,18 +49,15 @@
         <!-- Page, data-page contains page name-->
         <div data-page="index" class="page">
           <!-- Scrollable page content-->
-          <div class="page-content myTJ-content">
+          <div class="page-content myTJ-primary">
 
 
-            <!-- Scrollable page content-->
+            
+                <p id="entryList">
 
-            <div class="content-block">
-              <div class="list-block">
-                <ul id="entryList">
-
-                </ul>
-              </div>
-            </div>
+                </p>
+              
+            
 
 
 
@@ -70,8 +67,8 @@
 
           </div>
           <!-- Bottom Toolbar-->
-          <div class="toolbar myTJ-light">
-            <div class="toolbar-inner">
+          <div class="toolbar myTJ-primary-dark">
+            <div class="toolbar-inner myTJ-primary-dark">
               <!-- Toolbar links -->
               <a href="new-entry.html" class="link myTJ-text">Add Text Note</a>
               <a href="newimage.html" class="link  myTJ-text">Add Image Note</a>
