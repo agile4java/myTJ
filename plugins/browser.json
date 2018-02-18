@@ -9,6 +9,9 @@
   "installed_plugins": {
     "cordova-plugin-whitelist": {
       "PACKAGE_NAME": "com.phonegap.mobilediary"
+    },
+    "cordova-plugin-camera": {
+      "PACKAGE_NAME": "com.phonegap.mobilediary"
     }
   },
   "dependent_plugins": {}
