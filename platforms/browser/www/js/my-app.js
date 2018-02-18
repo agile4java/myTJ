@@ -46,3 +46,41 @@ function createContentPage() {
     );
 	return;
 }
+
+// Open Camera app and take picture
+function getNewPic() {
+
+    // Set Camera Options
+    function setOptions(srcType) {
+      var options = {
+        // Some common settings are 20, 50, and 100
+        quality: 50,
+        destinationType: Camera.DestinationType.FILE_URI,
+        // In this app, dynamically set the picture source, Camera or photo gallery
+        sourceType: srcType,
+        encodingType: Camera.EncodingType.JPEG,
+        mediaType: Camera.MediaType.PICTURE,
+        allowEdit: true,
+        correctOrientation: true  //Corrects Android orientation quirks
+      }
+      return options;
+    }
+  
+    var srcType = Camera.PictureSourceType.CAMERA;
+    var options = setOptions(srcType);
+  
+  
+    navigator.camera.getPicture(onSuccess, onFail, options);
+  
+    function onSuccess(imageURI) {
+      var image = document.createElement("img");
+      image.src = imageURI;
+      image.setAttribute("width", "auto");
+      image.setAttribute("height", "300");
+      $("#picPlace").append(image);
+    }
+  
+    function onFail(message) {
+      console.log("Failed to get pic, error = " + message);
+    }
+  }

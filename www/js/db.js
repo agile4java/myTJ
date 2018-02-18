@@ -117,32 +117,32 @@ function getEntries() {
       entry.date = cursor.value.date;
       entry.body = cursor.value.body;
 
-     
+
       entriesArray.push(entry);
       cursor.continue();
-     
+
     } else {
       var output = '';
       for (j = 0; j < entriesArray.length; j++) {
         console.log("entriesArray at index =" + j);
         console.log(entriesArray[j]);
         var newCard = document.createElement("div");
-        newCard.innerHTML = 
-         '<div class="card myTJ-secondary">'+
-         '   <div class="card-header myTJ-secondary-dark myTJ-text">'+
-         '      <h2>'+ entriesArray[j].title +'</h2>'+
-         '   </div>'+
-         '   <div class="card-content card-content-padding"> '+
-         '      <h2 class="myTJ-secondary myTJ-text-dark">' + entriesArray[j].body + '</h2>'+
-         '   </div> '+
-         '   <div class="card-footer myTJ-secondary-dark myTJ-text">'+
-         '      Posted on ' + entriesArray[j].date + 
-         '   </div> '+
-         '</div>';
-         $("#entryList").append(newCard);
+        newCard.innerHTML =
+          '<div class="card myTJ-secondary">' +
+          '   <div class="card-header myTJ-secondary-dark myTJ-text">' +
+          '      <h2>' + entriesArray[j].title + '</h2>' +
+          '   </div>' +
+          '   <div class="card-content card-content-padding"> ' +
+          '      <h2 class="myTJ-secondary myTJ-text-dark">' + entriesArray[j].body + '</h2>' +
+          '   </div> ' +
+          '   <div class="card-footer myTJ-secondary-dark myTJ-text">' +
+          '      Posted on ' + entriesArray[j].date +
+          '   </div> ' +
+          '</div>';
+        $("#entryList").append(newCard);
       }
 
-      
+
     }
   }
 
@@ -165,18 +165,3 @@ function getEntry(entryID) {
   });
 }
 
-// Open Camera app and take picture
-function getNewPic(){
-  navigator.camera.getPicture(onSuccess, onFail, {
-    quality: 100,
-    destinationType: Camera.DestinationType.FILE_URI
-  });
-
-  function onSuccess(imageURI){
-    var image = document.createElement("img");
-    image.src = imageURI;
-    image.setAttribute("width", "auto");
-    image.setAttribute("height", "300");
-    $("#picPlace").append(image);
-  }
-}

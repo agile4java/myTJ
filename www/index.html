@@ -52,12 +52,12 @@
           <div class="page-content myTJ-primary">
 
 
-            
-                <p id="entryList">
 
-                </p>
-              
-            
+            <p id="entryList">
+
+            </p>
+
+
 
 
 
@@ -78,12 +78,18 @@
         </div>
       </div>
       <script src="https://cdnjs.cloudflare.com/ajax/libs/jquery/3.3.1/jquery.min.js"></script>
+      <script type="text/javascript" src="cordova.js"></script>
       <!-- Path to Framework7 Library JS-->
       <script type="text/javascript" src="js/framework7.min.js"></script>
       <!-- Path to your app js-->
       <script type="text/javascript" src="js/my-app.js"></script>
       <script type="text/javascript" src="js/db.js"></script>
+      <script type="text/javascript">
+        function onDeviceReady() {
+          console.log(navigator.camera);
+        }
+        document.addEventListener("deviceready", onDeviceReady, false);
+        
+</body >
 
-</body>
-
-</html>
+</html >
