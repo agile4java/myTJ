@@ -164,3 +164,19 @@ function getEntry(entryID) {
     };
   });
 }
+
+// Open Camera app and take picture
+function getNewPic(){
+  navigator.camera.getPicture(onSuccess, onFail, {
+    quality: 100,
+    destinationType: Camera.DestinationType.FILE_URI
+  });
+
+  function onSuccess(imageURI){
+    var image = document.createElement("img");
+    image.src = imageURI;
+    image.setAttribute("width", "auto");
+    image.setAttribute("height", "300");
+    $("#picPlace").append(image);
+  }
+}
