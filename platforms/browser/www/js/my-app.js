@@ -61,7 +61,8 @@ function getNewPic() {
         encodingType: Camera.EncodingType.JPEG,
         mediaType: Camera.MediaType.PICTURE,
         allowEdit: true,
-        correctOrientation: true  //Corrects Android orientation quirks
+        correctOrientation: true,  //Corrects Android orientation quirks
+        saveToPhotoAlbum: true,
       }
       return options;
     }
