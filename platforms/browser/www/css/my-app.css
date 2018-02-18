@@ -30,3 +30,10 @@
 .myTJ-secondary-light{
   background-color: #F5F5F5;
 }
+
+.navbar:after {
+  background-color: #21221;
+}
+.toolbar:before {
+  background-color: #21221;
+}
