@@ -32,8 +32,13 @@
 }
 
 .navbar:after {
-  background-color: #21221;
+  background-color: #212121;
 }
 .toolbar:before {
-  background-color: #21221;
+  background-color: #212121;
+}
+
+.notePicture {
+  width: "100%";
+  height: "auto";
 }

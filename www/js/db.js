@@ -10,7 +10,7 @@ request.onupgradeneeded = function (event) {
 
     entriesOS.createIndex('title', 'title', { unique: false });
     entriesOS.createIndex('date', 'date', { unique: false });
-    entriesOS.createIndex('imgSource', 'imgSource', {unique: false});
+    entriesOS.createIndex('imgSource', 'imgSource', { unique: false });
     entriesOS.createIndex('body', 'body', { unique: false });
   }
 }
@@ -49,15 +49,23 @@ request.onerror = function (event) {
 
 
 // Add Entry
-function addEntry(type) {
+function addEntry(noteType) {
 
+  var noteType = noteType;
   var title = $('#title').val();
   var date = $('#datePicker').val();
+  if (noteType === "newPicture") {
+    var imgSource = $('#picPlace').children('.img').attr('src');
+  }
+  if (noteType === "newText") {
+    var imgSource = null;
+  }
   var body = $('#body').val();
   var transaction = db.transaction(['entries'], 'readwrite');
   var store = transaction.objectStore('entries');
   //Define Store
   var entry = {
+    noteType: noteType,
     title: title,
     date: date,
     imgSource: imgSource,
@@ -86,13 +94,16 @@ function getEntries() {
   // var store = transaction.objectStore('entries');
   // var index = store.index('title');
   var id = 1;
+  var noteType = new String();
   var title = new String();
   var date = date;
   var imgSource = new String();
   var body = new String();
   var entry = {
+    noteType: noteType,
     title: title,
     date: date,
+    imgSource: imgSource,
     body: body
   };
 
@@ -106,6 +117,7 @@ function getEntries() {
     var cursor = event.target.result;
     if (cursor) {
       var entry = {
+        noteType: noteType,
         title: title,
         date: date,
         imgSource: imgSource,
@@ -113,8 +125,10 @@ function getEntries() {
       };
       console.log("Entry id = " + cursor.value.id);
       console.log("Entry title = " + cursor.value.title);
+      entry.noteType = cursor.value.noteType;
       entry.title = cursor.value.title;
       entry.date = cursor.value.date;
+      entry.imgSource = cursor.value.imgSource;
       entry.body = cursor.value.body;
 
 
@@ -126,27 +140,43 @@ function getEntries() {
       for (j = 0; j < entriesArray.length; j++) {
         console.log("entriesArray at index =" + j);
         console.log(entriesArray[j]);
-        var newCard = document.createElement("div");
-        newCard.innerHTML =
-          '<div class="card myTJ-secondary">' +
-          '   <div class="card-header myTJ-secondary-dark myTJ-text">' +
-          '      <h2>' + entriesArray[j].title + '</h2>' +
-          '   </div>' +
-          '   <div class="card-content card-content-padding"> ' +
-          '      <h2 class="myTJ-secondary myTJ-text-dark">' + entriesArray[j].body + '</h2>' +
-          '   </div> ' +
-          '   <div class="card-footer myTJ-secondary-dark myTJ-text">' +
-          '      Posted on ' + entriesArray[j].date +
-          '   </div> ' +
-          '</div>';
-        $("#entryList").append(newCard);
-      }
+        if (entriesArray[j].noteType === "newPicture") {
+          var newCard = document.createElement("div");
+          newCard.innerHTML =
+            '<div class="card myTJ-secondary">' +
+            '   <div class="card-header myTJ-secondary-dark myTJ-text">' +
+            '      <h2>' + entriesArray[j].title + '</h2>' +
+            '   </div>' +
+            '   <div class="card-content card-content-padding"> ' +
+            '       <img src="'+ entriesArray[j].imgSource + '" class="notePicture"></img>' +
+            '      <h2 class="myTJ-secondary myTJ-text-dark">' + entriesArray[j].body + '</h2>' +
+            '   </div> ' +
+            '   <div class="card-footer myTJ-secondary-dark myTJ-text">' +
+            '      Posted on ' + entriesArray[j].date +
+            '   </div> ' +
+            '</div>';
+          var newCard = document.createElement("div");
+        } else {
+          var newCard = document.createElement("div");
+          newCard.innerHTML =
+            '<div class="card myTJ-secondary">' +
+            '   <div class="card-header myTJ-secondary-dark myTJ-text">' +
+            '      <h2>' + entriesArray[j].title + '</h2>' +
+            '   </div>' +
+            '   <div class="card-content card-content-padding"> ' +
+            '      <h2 class="myTJ-secondary myTJ-text-dark">' + entriesArray[j].body + '</h2>' +
+            '   </div> ' +
+            '   <div class="card-footer myTJ-secondary-dark myTJ-text">' +
+            '      Posted on ' + entriesArray[j].date +
+            '   </div> ' +
+            '</div>';
+          $("#entryList").append(newCard);
+        } // end else of make newCard
+      } // end for loop of creating cards for entriesArray
+    } // end of cursor else body
+  } // end of openCursor.onSuccess
 
-
-    }
-  }
-
-}
+} // end of getEntries function
 
 
 

@@ -19,7 +19,7 @@
     <!-- Scrollable page content-->
     <div class="page-content myTJ-primary">
       <div class="content-block-title myTJ-text">New Picture Note Entry</div>
-      <form onsubmit="addEntry("newPicture")">
+      <form onsubmit="addEntry('newPicture')">
         <div class="list-block">
           <ul>
             <li>
@@ -81,13 +81,19 @@
         <div class="toolbar-inner myTJ-primary-dark">
           <!-- Toolbar links -->
           <div class="left">
-            <a href="#" class="back link">
-              <i class="icon icon-back"></i>
-              <span class="myTJ-text">Back</span>
+            <a onclick="getLibraryPic()">
+              <!-- <i class="icon icon-photo"></i> -->
+              <span class="myTJ-text">Saved Pic</span>
+            </a>
+          </div>
+          <div class="center">
+            <a onclick="getCameraRollPic()">
+              <!-- <i class="icon icon-photo"></i> -->
+              <span class="myTJ-text">Camera Roll</span>
             </a>
           </div>
           <div class="right">
-            <a onclick="getNewPic()">
+            <a onclick="getTestPic()">
               <i class="icon icon-camera"></i>
               
             </a>
