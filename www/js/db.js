@@ -10,6 +10,7 @@ request.onupgradeneeded = function (event) {
 
     entriesOS.createIndex('title', 'title', { unique: false });
     entriesOS.createIndex('date', 'date', { unique: false });
+    entriesOS.createIndex('imgSource', 'imgSource', {unique: false});
     entriesOS.createIndex('body', 'body', { unique: false });
   }
 }
@@ -48,36 +49,33 @@ request.onerror = function (event) {
 
 
 // Add Entry
-function addEntry() {
-  var title = $('#title').val();
+function addEntry(type) {
 
+  var title = $('#title').val();
   var date = $('#datePicker').val();
   var body = $('#body').val();
-
   var transaction = db.transaction(['entries'], 'readwrite');
-
   var store = transaction.objectStore('entries');
-
   //Define Store
   var entry = {
     title: title,
     date: date,
+    imgSource: imgSource,
     body: body
   };
-
-  // Perfomr the add
+  // Perform the add
   var request = store.add(entry);
-
   //Success
   request.onsuccess = function (event) {
     console.log('Entry Added!');
   }
-
   //Fail
   request.onerror = function (event) {
     console.log('There Was An Error!');
   }
-}
+} //end addEntry()
+
+
 
 // Get and Display Entries
 function getEntries() {
@@ -90,6 +88,7 @@ function getEntries() {
   var id = 1;
   var title = new String();
   var date = date;
+  var imgSource = new String();
   var body = new String();
   var entry = {
     title: title,
@@ -109,6 +108,7 @@ function getEntries() {
       var entry = {
         title: title,
         date: date,
+        imgSource: imgSource,
         body: body
       };
       console.log("Entry id = " + cursor.value.id);
