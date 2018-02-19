@@ -55,7 +55,12 @@ function addEntry(noteType) {
   var title = $('#title').val();
   var date = $('#datePicker').val();
   if (noteType === "newPicture") {
-    var imgSource = $('#picPlace').children('.img').attr('src');
+    var imgSource = $('#newPic').attr('src');
+    
+        //-----------------------------------Test Code Below-----------------------------
+        quickLogImage(imgSource);
+        //-----------------------------------Test Code Above -----------------------------
+        
   }
   if (noteType === "newText") {
     var imgSource = null;
@@ -123,8 +128,7 @@ function getEntries() {
         imgSource: imgSource,
         body: body
       };
-      console.log("Entry id = " + cursor.value.id);
-      console.log("Entry title = " + cursor.value.title);
+  
       entry.noteType = cursor.value.noteType;
       entry.title = cursor.value.title;
       entry.date = cursor.value.date;
@@ -139,8 +143,13 @@ function getEntries() {
       var output = '';
       for (j = 0; j < entriesArray.length; j++) {
         console.log("entriesArray at index =" + j);
-        console.log(entriesArray[j]);
+        
         if (entriesArray[j].noteType === "newPicture") {
+          
+        //-----------------------------------Test Code Below-----------------------------
+       console.log("entriesArray imgSource = " + entriesArray[j].imgSource);
+        //-----------------------------------Test Code Above -----------------------------
+        
           var newCard = document.createElement("div");
           newCard.innerHTML =
             '<div class="card myTJ-secondary">' +
@@ -194,4 +203,5 @@ function getEntry(entryID) {
     };
   });
 }
+
 

@@ -4,8 +4,11 @@
 <head>
   <meta charset="utf-8">
   <meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1, minimum-scale=1, user-scalable=no, minimal-ui">
+  <!-- <meta http-equiv="Content-Security-Policy" content="default-src 'self' data: gap: ms-appdata: https://ssl.gstatic.com 'unsafe-eval'; style-src 'self' 'unsafe-inline'; media-src *"> -->
   <meta name="apple-mobile-web-app-capable" content="yes">
   <meta name="apple-mobile-web-app-status-bar-style" content="black">
+  <!-- Weinre debugger for phonegap app  -->
+  <script src="http://192.168.2.103:8080/target/target-script-min.js#anonymous"></script>
   <title>MobileDiary</title>
   <!-- Path to Framework7 Library CSS-->
   <link rel="stylesheet" href="css/framework7.min.css">
@@ -87,6 +90,7 @@
       <script type="text/javascript">
         function onDeviceReady() {
           console.log(navigator.camera);
+          console.log(cordova.file);
         }
         document.addEventListener("deviceready", onDeviceReady, false);
         </script>

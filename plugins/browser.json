@@ -12,6 +12,9 @@
     },
     "cordova-plugin-camera": {
       "PACKAGE_NAME": "com.phonegap.mobilediary"
+    },
+    "cordova-plugin-file": {
+      "PACKAGE_NAME": "com.phonegap.mobilediary"
     }
   },
   "dependent_plugins": {}
