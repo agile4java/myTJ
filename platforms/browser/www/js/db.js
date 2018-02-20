@@ -16,7 +16,7 @@ request.onupgradeneeded = function (event) {
 }
 
 request.onsuccess = function (event) {
-  console.log('Success: Database Opened!');
+  mySnackbar('Success: Database Opened!');
   db = event.target.result;
   getEntries();
 
@@ -44,7 +44,7 @@ request.onsuccess = function (event) {
 }
 
 request.onerror = function (event) {
-  console.log('Error: Database NOT Opened!');
+  mySnackbar('Error: Database NOT Opened!');
 }
 
 
@@ -80,11 +80,11 @@ function addEntry(noteType) {
   var request = store.add(entry);
   //Success
   request.onsuccess = function (event) {
-    console.log('Entry Added!');
+    mySnackbar('Entry Added!');
   }
   //Fail
   request.onerror = function (event) {
-    console.log('There Was An Error!');
+    mySnackbar('There Was An Error!');
   }
 } //end addEntry()
 
@@ -92,7 +92,8 @@ function addEntry(noteType) {
 
 // Get and Display Entries
 function getEntries() {
-  console.log("Getting Entries....");
+  mySnackbar("Getting Entries....");
+  // noteLogging("Getting entries...");
 
 
   // var transaction = db.transaction(['entries'], 'readonly');
@@ -142,12 +143,12 @@ function getEntries() {
     } else {
       var output = '';
       for (j = 0; j < entriesArray.length; j++) {
-        console.log("entriesArray at index =" + j);
+        mySnackbar("entriesArray at index =" + j);
         
         if (entriesArray[j].noteType === "newPicture") {
           
         //-----------------------------------Test Code Below-----------------------------
-       console.log("entriesArray imgSource = " + entriesArray[j].imgSource);
+       mySnackbar("entriesArray imgSource = " + entriesArray[j].imgSource);
         //-----------------------------------Test Code Above -----------------------------
         
           var newCard = document.createElement("div");
@@ -204,4 +205,16 @@ function getEntry(entryID) {
   });
 }
 
+// Clear the database
+function clearDB(){
+
+  var transaction = db.transaction(['entries'], "readwrite");
+  var objectStore = transaction.objectStore('entries');
+
+  var objectStoreRequest = objectStore.clear();
+
+  objectStoreRequest.onsuccess = function(event){
+    mySnackbar("Database Cleared");
+  };
+}
 

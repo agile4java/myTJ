@@ -8,15 +8,15 @@
   <meta name="apple-mobile-web-app-capable" content="yes">
   <meta name="apple-mobile-web-app-status-bar-style" content="black">
   <!-- Weinre debugger for phonegap app  -->
-  <script src="http://192.168.2.103:8080/target/target-script-min.js#anonymous"></script>
-  <title>MobileDiary</title>
+  <!-- <script src="http://192.168.2.103:8080/target/target-script-min.js#anonymous"></script> -->
+  <title>myTJ</title>
   <!-- Path to Framework7 Library CSS-->
   <link rel="stylesheet" href="css/framework7.min.css">
   <!-- Path to your custom app styles-->
   <link rel="stylesheet" href="css/my-app.css">
 </head>
 
-<body>
+<body >
   <!-- Status bar overlay for fullscreen mode-->
   <div class="statusbar-overlay"></div>
   <!-- Panels overlay-->
@@ -53,8 +53,8 @@
         <div data-page="index" class="page">
           <!-- Scrollable page content-->
           <div class="page-content myTJ-primary">
-
-
+            <div  class="snackbar">This is the Snackbar</div>
+            <button class="button" onclick="mySnackbar('something different')">Toggle Snackbar</button>
 
             <p id="entryList">
 
@@ -73,9 +73,10 @@
           <div class="toolbar myTJ-primary-dark">
             <div class="toolbar-inner myTJ-primary-dark">
               <!-- Toolbar links -->
-              <a href="new-entry.html" class="link myTJ-text">Add Text Note</a>
-              <a href="new-picnote.html" class="link  myTJ-text">Add Image Note</a>
-              <a href="newvideo.html" class="link  myTJ-text">Add Video Note</a>
+              <a href="new-entry.html" class="link myTJ-text">+Text</a>
+              <a href="new-picnote.html" class="link  myTJ-text">+Pic</a>
+              <a href="devPanel.html" class="link myTJ-text">Panel</a>
+              <a href="newvideo.html" class="link  myTJ-text">+Vid</a>
             </div>
           </div>
         </div>
@@ -87,13 +88,16 @@
       <!-- Path to your app js-->
       <script type="text/javascript" src="js/my-app.js"></script>
       <script type="text/javascript" src="js/db.js"></script>
+
       <script type="text/javascript">
         function onDeviceReady() {
           console.log(navigator.camera);
           console.log(cordova.file);
+
         }
         document.addEventListener("deviceready", onDeviceReady, false);
-        </script>
-</body >
+      </script>
+      
+</body>
 
-</html >
+</html>

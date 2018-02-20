@@ -1,6 +1,21 @@
 // Initialize your app
-var myTJ = new Framework7();
+var myTJ = new Framework7({
+    toast: {
+        // set default title for all dialog shortcuts
+        closeTimeout: 3000,
+        // change default "OK" button text
+        closeButton: 'Done'
+    }
+});
+// var toastCenter = myTJ.toast.create({
+//     text: 'I\'m on center',
+//     position: 'center',
+//     closeTimeout: 2000,
+// });
 
+
+
+var notes = [];
 // Export selectors engine
 var $$ = Dom7;
 
@@ -10,42 +25,68 @@ var mainView = myTJ.addView('.view-main', {
     dynamicNavbar: true
 });
 
-// Callbacks to run specific code for specific pages, for example for About page:
-myTJ.onPageInit('about', function (page) {
-    // run createContentPage func after link was clicked
-    $$('.create-page').on('click', function () {
-        createContentPage();
-    });
+function mySnackbar(newText) {
+    // Get the snackbar DIV
+    var x = $$('.snackbar');
+
+    // Change innerHTML to passed in String
+    x.html(newText);
+    // Add the "show" class to DIV
+    x.toggleClass('show');
+
+    setTimeout(function(){ x.toggleClass('show'); }, 3000);
+    
+}
+
+myTJ.onPageInit("new-entry", function (page) {
+   mySnackbar("New Text Note");
+});
+myTJ.onPageInit("new-picnote", function (page) {
+    mySnackbar("New Picture Note");
 });
 
-// Generate dynamic page
-var dynamicPageIndex = 0;
-function createContentPage() {
-    mainView.router.loadContent(
-        '<!-- Top Navbar-->' +
-        '<div class="navbar">' +
-        '  <div class="navbar-inner">' +
-        '    <div class="left"><a href="#" class="back link"><i class="icon icon-back"></i><span>Back</span></a></div>' +
-        '    <div class="center sliding">Dynamic Page ' + (++dynamicPageIndex) + '</div>' +
-        '  </div>' +
-        '</div>' +
-        '<div class="pages">' +
-        '  <!-- Page, data-page contains page name-->' +
-        '  <div data-page="dynamic-pages" class="page">' +
-        '    <!-- Scrollable page content-->' +
-        '    <div class="page-content">' +
-        '      <div class="content-block">' +
-        '        <div class="content-block-inner">' +
-        '          <p>Here is a dynamic page created on ' + new Date() + ' !</p>' +
-        '          <p>Go <a href="#" class="back">back</a> or go to <a href="services.html">Services</a>.</p>' +
-        '        </div>' +
-        '      </div>' +
-        '    </div>' +
-        '  </div>' +
-        '</div>'
-    );
-    return;
-}
+
+
+
+
+
+//-----------------------------------Test Code Below-----------------------------
+
+// function noteLogging(newNoteText) {
+//     console.log("entering noteLogging with newNoteText = " + newNoteText);
+//     // Alert
+
+//     myTJ.dialog.alert();
+
+
+//     notes.push(newNoteText);
+// }
+
+
+function printNotes() {
+
+
+    var noteList = $$('#myTJnoteSpot');
+    for (note in notes) {
+        var newCard = document.createElement("div");
+        newCard.innerHTML =
+            '<div class="card myTJ-secondary">' +
+            '   <div class="card-header myTJ-secondary-dark myTJ-text">' +
+            '      <h2>' + newNoteText + '</h2>' +
+            '   </div>' +
+            '   <div class="card-content card-content-padding"> ' +
+            '      <h2 class="myTJ-secondary myTJ-text-dark">' + noteText + '</h2>' +
+            '   </div> ' +
+            '   <div class="card-footer myTJ-secondary-dark myTJ-text">' +
+            '      Posted on ' +
+            '   </div> ' +
+            '</div>';
+    }
+
+}// End noteLogging function
+//-----------------------------------Test Code Above -----------------------------
+
+
 
 // Open Camera app and take picture
 function getNewPic() {
@@ -76,7 +117,7 @@ function getNewPic() {
     function onSuccess(imageURI) {
 
         //-----------------------------------Test Code Below-----------------------------
-        quickLogImage(imageURI);
+        mySnackbar("photo stored at: " + imageURI);
         //-----------------------------------Test Code Above -----------------------------
 
         var image = document.createElement("img");
@@ -213,36 +254,41 @@ function quickLogImage(imageURI) {
 
 //copy photo to app file storage
 function copyPhotoToAppDir(imageURI) {
-    if (!imageURI) {
-        console.warn("You need to pass imageURI");
-        return;
-    }
 
-    var fileNameSplit = imageURI.split("/"),
-        fileName = fileNameSplit[fileNameSplit.length - 1],
-        deferred = jQuery.Deferred();
+    var fileEntry = createFile();
 
-    var copyPhoto = function (fileEntry) {
-        window.requestFileSystem(LocalFileSystem.PERSISTENT, 0, function (fileSys) {
-            fileSys.root.getDirectory("photos", { create: true, exclusive: false }, function (dir) {
-                fileEntry.copyTo(dir, fileName, onCopySuccess, onFileFail);
-            }, onFileFail);
-        }, onFileFail);
-    };
+    //-------Begin----------------commented out previous copyPhotoToAppDir Code---------------------------
+    // if (!imageURI) {
+    //     console.warn("You need to pass imageURI");
+    //     return;
+    // }
 
-    var onCopySuccess = function onCopySuccess(entry) {
-        console.log("NEW PATH", entry.fullPath);
-        deferred.resolve(entry.fullPath);
-    };
+    // var fileNameSplit = imageURI.split("/"),
+    //     fileName = fileNameSplit[fileNameSplit.length - 1],
+    //     deferred = jQuery.Deferred();
 
-    var onFileFail = function (error) {
-        console.log("COPY FAIL", error);
-        deferred.reject();
-    };
+    // var copyPhoto = function (fileEntry) {
+    //     window.requestFileSystem(LocalFileSystem.PERSISTENT, 0, function (fileSys) {
+    //         fileSys.root.getDirectory("photos", { create: true, exclusive: false }, function (dir) {
+    //             fileEntry.copyTo(dir, fileName, onCopySuccess, onFileFail);
+    //         }, onFileFail);
+    //     }, onFileFail);
+    // };
 
-    window.resolveLocalFileSystemURL(imageURI, copyPhoto, onFileFail);
+    // var onCopySuccess = function onCopySuccess(entry) {
+    //     console.log("NEW PATH", entry.fullPath);
+    //     deferred.resolve(entry.fullPath);
+    // };
 
-    return deferred.promise;
+    // var onFileFail = function (error) {
+    //     console.log("COPY FAIL", error);
+    //     deferred.reject();
+    // };
+
+    // window.resolveLocalFileSystemURL(imageURI, copyPhoto, onFileFail);
+
+    // return deferred.promise;
+    //-------End----------------commented out previous copyPhotoToAppDir Code---------------------------
 }
 
 // create a file in app persistent storage
@@ -256,16 +302,20 @@ function createFile() {
 
         function onSuccess(fileEntry) {
 
-            fileEntry.createWriter(onSuccess, onError)
+            return fileEntry;
 
-            function onSuccess(fileWriter) {
-                
-                   return fileWriter;
-                } //end OnSuccess callback of createWriter
 
-            function onError(e) {
-                alert('write error: ' + e.toString());
-            }
+            //-------------commented out - use for creating a fileWriter
+            // fileEntry.createWriter(onSuccess, onError)
+
+            // function onSuccess(fileWriter) {
+
+            //        return fileWriter;
+            //     } //end OnSuccess callback of createWriter
+
+            // function onError(e) {
+            //     alert('write error: ' + e.toString());
+
 
 
         } //end onSuccess callback of fileEntry
@@ -285,7 +335,7 @@ function createFile() {
 
 
 
-// request for persisten storage
+// request for persistent storage
 function getSomeStorage() {
     window.requestFileSystem(LocalFileSystem.PERSISTENT, 0, function (fs) {
 
@@ -326,3 +376,4 @@ function getSomeStorage() {
     }
 
 } // End getSomeStorage function
+
