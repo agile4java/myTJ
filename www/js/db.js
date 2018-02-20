@@ -143,7 +143,7 @@ function getEntries() {
     } else {
       var output = '';
       for (j = 0; j < entriesArray.length; j++) {
-        mySnackbar("entriesArray at index =" + j);
+       
         
         if (entriesArray[j].noteType === "newPicture") {
           
@@ -165,7 +165,7 @@ function getEntries() {
             '      Posted on ' + entriesArray[j].date +
             '   </div> ' +
             '</div>';
-          var newCard = document.createElement("div");
+            $("#entryList").append(newCard);
         } else {
           var newCard = document.createElement("div");
           newCard.innerHTML =
