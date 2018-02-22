@@ -231,29 +231,14 @@ function getEntry(entryID) {
 
   myTJ.onPageInit('entry', function (page) {
 
-    //
+    // On page Initialize get Entry to Edit
     var id = entryID;
     var transaction = db.transaction(['entries'], 'readonly');
     var store = transaction.objectStore('entries');
     var request = store.get(entryID);
     var onSubCall = "saveEditedEntry(" + entryID + ")";
-
-
-    //-----------------------------------Test Code Below-----------------------------
-
-
-    // Get Formatted Current Date
-    // Date.prototype.toDateInputValue = (function () {
-
-    //   return entryDate.toJSON().slice(0, 10);
-    // });
-
-    // // Display Current Date in Date Field
-    // $('#datePicker').val(entryDate.toDateInputValue());
-    // });
-
-    //-----------------------------------Test Code Above -----------------------------
-
+    var onDeleteCall = "deleteWarn(" + entryID + ")";
+   
 
 
     request.onsuccess = function (event) {
@@ -262,6 +247,8 @@ function getEntry(entryID) {
       $$('#entryDatePicker').attr('value', request.result.date);
       $$('#entryBody').html(request.result.body);
       $$('#entryPageForm').attr('onsubmit', onSubCall);
+      $$('#deleteEntryButton').attr('onclick', onDeleteCall);
+     
     };
   });
 
@@ -333,3 +320,26 @@ function saveEditedEntry(entryID) {
   };
 } // end saveEditedEntry
 
+function deleteWarn(entryID){
+  console.log("deleteWarn entryID = " + entryID);
+  var entryDelete = confirm("This will permanently delete the entry!!");
+  if(entryDelete === true){
+    console.log("deleteWarn confirm accepted with entryID = " + entryID);
+  deleteEntry(entryID);
+  }
+}
+
+
+function deleteEntry(entryID){
+  console.log("deleteEntry with entryID = " + entryID);
+  var deleteRecord = entryID;
+  var transaction = db.transaction(["entries"],"readwrite");
+
+	var store = transaction.objectStore("entries");
+	var request = store.delete(deleteRecord);
+
+	request.onsuccess = function(event){
+		window.location.href="index.html";
+	}
+  
+}

@@ -12,7 +12,7 @@
     <!-- Scrollable page content-->
     <div class="page-content myTJ-primary">
       <div class="snackbar">This is the Snackbar</div>
-      <button class="button" onclick="mySnackbar('something different')">Toggle Snackbar</button>
+     
       <div class="content-block-title myTJ-text">Edit Entry Content Below</div>
       <form id="entryPageForm" onsubmit="saveEditedEntry('newText')">
         <div class="list-block">
@@ -63,6 +63,13 @@
           </div>
         </div>
       </form>
+      <div class="content-block">
+          <div class="row">
+            <div class="col-100" id="deleteButtonDiv">
+              <a id="deleteEntryButton" class="button button-big button-fill color-red">Delete Entry</a>
+            </div>
+          </div>
+        </div>
     </div>
     <div class="toolbar myTJ-primary-dark">
       <div class="toolbar-inner myTJ-primary-dark">
