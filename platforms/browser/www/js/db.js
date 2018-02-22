@@ -237,24 +237,36 @@ function getEntry(entryID) {
     var store = transaction.objectStore('entries');
     var request = store.get(entryID);
     var onSubCall = "saveEditedEntry(" + entryID + ")";
-    console.log("onSubCall var in getEntry for onsubmit button = " + onSubCall);
+
+
+    //-----------------------------------Test Code Below-----------------------------
+
+
+    // Get Formatted Current Date
+    // Date.prototype.toDateInputValue = (function () {
+
+    //   return entryDate.toJSON().slice(0, 10);
+    // });
+
+    // // Display Current Date in Date Field
+    // $('#datePicker').val(entryDate.toDateInputValue());
+    // });
+
+    //-----------------------------------Test Code Above -----------------------------
+
+
 
     request.onsuccess = function (event) {
-      $$('#entryTitle').html(request.result.title);
-      $$('#entryDate').html(request.result.date);
+
+      $$('#entryTitle').attr('value', request.result.title);
+      $$('#entryDatePicker').attr('value', request.result.date);
       $$('#entryBody').html(request.result.body);
-      $$('#entryPageForm').attr('onsubmit', "saveEditedEntry(' + entryID + ')");
+      $$('#entryPageForm').attr('onsubmit', onSubCall);
     };
   });
-  //
-
-  //-----------------------------------Test Code Below-----------------------------
-  mySnackbar("getEntry.onsuccess.id  = " + entryID);
-  console.log("gettingEntry for edit with id  = " + entryID);
-  //-----------------------------------------------Test Code Above--------------------
 
 
-}
+} // end getEntry function
 
 // Get Picture Entry
 function getPicEntry(entryID) {
@@ -276,7 +288,7 @@ function getPicEntry(entryID) {
       $('#entryBody').html(request.result.body);
     };
   });
-}
+} // end getPicEntry function
 
 // Clear the database
 function clearDB() {
@@ -289,18 +301,35 @@ function clearDB() {
   objectStoreRequest.onsuccess = function (event) {
     mySnackbar("Database Cleared");
   };
-}
+} // end clearDB function
 
-// Put an edited Entry
+// Update an Entry
 function saveEditedEntry(entryID) {
+  // Get request on objectStore
+  var transaction = db.transaction(['entries'], 'readwrite');
+  var store = transaction.objectStore('entries');
+  var request = store.get(entryID);
 
+  request.onsuccess = function (event) {
+    var entryToFix = request.result;
 
-  //-----------------------------------Test Code Below-----------------------------
-  console.log("Entered saveEditedEntry with entryID = " + entryID);
-  //-----------------------------------Test Code Above ----------------------------- 
+    // Get Updated entry values
+    entryToFix.title = $$('#entryTitle').val();
+    entryToFix.date = $$('#entryDatePicker').val();
+    entryToFix.body = $$('#entryBody').val();
+    entryToFix.noteType = "newText";
+    entryToFix.imgSource = null;
 
-
-
-
-}
+    // store the entry back into the objectStore
+    var requestPut = store.put(entryToFix);
+    //Success
+    requestPut.onsuccess = function (event) {
+      console.log("Entry updated");
+  };
+    //Fail
+    requestPut.onerror = function (event) {
+      console.log('There Was An Error!');
+    }
+  };
+} // end saveEditedEntry
 
