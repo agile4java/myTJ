@@ -119,10 +119,7 @@ function getNewPic() {
 
     function onSuccess(imageURI) {
 
-        //-----------------------------------Test Code Below-----------------------------
-        mySnackbar("photo stored at: " + imageURI);
-        //-----------------------------------Test Code Above -----------------------------
-
+      
         var image = document.createElement("img");
 
         image.src = imageURI;
@@ -183,6 +180,135 @@ function getLibraryPic() {
 // get a pictue taken previously
 
 function getCameraRollPic() {
+
+    // Set Camera Options
+    function setOptions(srcType) {
+        var options = {
+            // Some common settings are 20, 50, and 100
+            quality: 50,
+            destinationType: Camera.DestinationType.FILE_URI,
+            // In this app, dynamically set the picture source, Camera or photo gallery
+            sourceType: srcType,
+            encodingType: Camera.EncodingType.JPEG,
+            mediaType: Camera.MediaType.PICTURE,
+            allowEdit: true,
+            correctOrientation: true,  //Corrects Android orientation quirks
+            saveToPhotoAlbum: true,
+        }
+        return options;
+    }
+
+    var srcType = Camera.PictureSourceType.SAVEDPHOTOALBUM;
+    var options = setOptions(srcType);
+
+
+    navigator.camera.getPicture(onSuccess, onFail, options);
+
+    function onSuccess(imageURI) {
+
+        var image = document.createElement("img");
+        //   commented out for testing, manually setting an image source
+        //   image.src = imageURI;
+        image.src = "dancer.jpg";
+        image.setAttribute("id", "newPic");
+        image.setAttribute("width", "100%");
+        image.setAttribute("height", "auto");
+        $("#picPlace").append(image);
+    }
+
+    function onFail(message) {
+        console.log("Failed to get pic, error = " + message);
+    }
+}
+// Open Camera app and take REPLACEMENT picture
+function getNewPicRep() {
+
+    // Set Camera Options
+    function setOptions(srcType) {
+        var options = {
+            // Some common settings are 20, 50, and 100
+            quality: 50,
+            destinationType: Camera.DestinationType.FILE_URI,
+            // In this app, dynamically set the picture source, Camera or photo gallery
+            sourceType: srcType,
+            encodingType: Camera.EncodingType.JPEG,
+            mediaType: Camera.MediaType.PICTURE,
+            allowEdit: true,
+            correctOrientation: true,  //Corrects Android orientation quirks
+            saveToPhotoAlbum: true,
+        }
+        return options;
+    }
+
+    var srcType = Camera.PictureSourceType.CAMERA;
+    var options = setOptions(srcType);
+
+
+    navigator.camera.getPicture(onSuccess, onFail, options);
+
+    function onSuccess(imageURI) {
+
+      
+        var image = document.createElement("img");
+
+        image.src = imageURI;
+        image.setAttribute("id", "newPic");
+        image.setAttribute("width", "100%");
+        image.setAttribute("height", "auto");
+        $("#entryPicPlace").append(image);
+
+
+    }
+
+    function onFail(message) {
+        console.log("Failed to get pic, error = " + message);
+    }
+}
+
+// get a REPLACEMENT picture from library
+
+function getLibraryPicRep() {
+
+    // Set Camera Options
+    function setOptions(srcType) {
+        var options = {
+            // Some common settings are 20, 50, and 100
+            quality: 50,
+            destinationType: Camera.DestinationType.FILE_URI,
+            // In this app, dynamically set the picture source, Camera or photo gallery
+            sourceType: srcType,
+            encodingType: Camera.EncodingType.JPEG,
+            mediaType: Camera.MediaType.PICTURE,
+            allowEdit: true,
+            correctOrientation: true,  //Corrects Android orientation quirks
+            saveToPhotoAlbum: true,
+        }
+        return options;
+    }
+
+    var srcType = Camera.PictureSourceType.PHOTOLIBRARY;
+    var options = setOptions(srcType);
+
+
+    navigator.camera.getPicture(onSuccess, onFail, options);
+
+    function onSuccess(imageURI) {
+        var image = document.createElement("img");
+        image.src = imageURI;
+        image.setAttribute("id", "newPic");
+        image.setAttribute("width", "100%");
+        image.setAttribute("height", "auto");
+        $("#picPlace").append(image);
+    }
+
+    function onFail(message) {
+        console.log("Failed to get pic, error = " + message);
+    }
+}
+
+// get a REPLACEMENT picture from the cameral roll
+
+function getCameraRollPicRep() {
 
     // Set Camera Options
     function setOptions(srcType) {

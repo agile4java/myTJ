@@ -90,18 +90,15 @@ function addEntry(noteType) {
 
 // Get and Display Entries
 function getEntries() {
-  mySnackbar("Getting Entries....");
-  // noteLogging("Getting entries...");
+  
   while (entriesArray.length > 0) {
     entriesArray.pop();
   }
-  mySnackbar("EntriesArray length = " + entriesArray.length);
+ 
 
 
-  // var transaction = db.transaction(['entries'], 'readonly');
-  // var store = transaction.objectStore('entries');
-  // var index = store.index('title');
-  var id = 1;
+  
+  var id = 0;
   var noteType = new String();
   var title = new String();
   var date = date;
@@ -151,27 +148,7 @@ function getEntries() {
 
 
         if (entriesArray[j].noteType === "newPicture") {
-
-          //-----------------------------------Test Code Below-----------------------------
-          mySnackbar("getEntries: entry " + entriesArray[j].id + " of " + entriesArray.length);
-
-          //  output += '<li><a onclick="getEntry(' + cursor.value.id + ')" href="entry.html" class="item-link">' +
-          //  '<div class="item-content">' +
-          //  '<div class="item-inner"> ' +
-          //  '<div class="item-title">' + cursor.value.title + '</div>' +
-          //  '</div>' +
-          //  '</div></a></li>';
-
-          //  <div class="row">
-          // <div class="col-50">
-          //   <div id="edit-btn"></div>
-          // </div>
-          // <div class="col-50">
-          //   <div id="delete-btn"></div>
-          //   </div>
-          //   </div>
-          //-----------------------------------Test Code Above -----------------------------
-
+          // If entry is a picEntry
           var newCard = document.createElement("div");
           newCard.innerHTML =
             '<div class="card myTJ-secondary">' +
@@ -187,17 +164,13 @@ function getEntries() {
             '    <div="col-50">Posted on ' + entriesArray[j].date +
             '   </div> ' +
             '   <div class="col-50 myTJ-secondary-dark myTJ-text">' +
-            '       <button onclick="getPicEntry(' + entriesArray[j].id + ')"' +
-            '          id="edit-btn" href="pic-entry.html">Edit Entry' +
-            '       </button>' +
+            '       <a class="item-link" onclick="getEntry(' + entriesArray[j].id + ')"' +
+            '          id="edit-btn" href="entry.html">Edit Entry' +
             '      </div>' +
             '</div>';
           $("#entryList").append(newCard);
         } else {
-          //-----------------------------------Test Code Below-----------------------------
-          mySnackbar("getEntries: entry " + entriesArray[j].id + " of " + entriesArray.length);
-          //-----------------------------------Test Code Above -----------------------------
-
+          // if entry is a text only entry    
           var newCard = document.createElement("div");
           newCard.innerHTML =
             '<div class="card myTJ-secondary">' +
@@ -228,7 +201,7 @@ function getEntries() {
 
 // Get Entry
 function getEntry(entryID) {
-
+  confirm("getEntry with entryID = " + entryID)
   myTJ.onPageInit('entry', function (page) {
 
     // On page Initialize get Entry to Edit
@@ -238,17 +211,43 @@ function getEntry(entryID) {
     var request = store.get(entryID);
     var onSubCall = "saveEditedEntry(" + entryID + ")";
     var onDeleteCall = "deleteWarn(" + entryID + ")";
-   
+
 
 
     request.onsuccess = function (event) {
-
       $$('#entryTitle').attr('value', request.result.title);
       $$('#entryDatePicker').attr('value', request.result.date);
       $$('#entryBody').html(request.result.body);
       $$('#entryPageForm').attr('onsubmit', onSubCall);
       $$('#deleteEntryButton').attr('onclick', onDeleteCall);
-     
+
+      if(request.result.imgSource !== null){
+        // if entry contains a picture create a list element for it
+
+        // create list item elements
+        // create image element and set attributes
+        var newPicButton = document.createElement()
+        var image = document.createElement("img");
+        image.src = request.result.imgSource;
+        image.setAttribute("id", "editFormPic");
+        image.setAttribute("width", "200");
+        image.setAttribute("height", "200");
+        var picListEl = document.createElement("li");
+        var itemContent = document.createElement("div");
+        var itemInner = document.createElement("div");
+        var picSpot = document.createElement("div");
+        itemContent.className = "item-content myTJ-secondary";
+        itemInner.className = "item-inner";
+        picSpot.id = "editPicPlace";
+
+        //compile the list element
+        picSpot.appendChild(image);
+        itemInner.appendChild(picSpot);
+        itemContent.appendChild(itemInner);
+        picListEl.appendChild(itemContent);
+        // add the list element to entry.html
+        $('#listItemDate').append(picListEl);
+      }
     };
   });
 
@@ -312,7 +311,7 @@ function saveEditedEntry(entryID) {
     //Success
     requestPut.onsuccess = function (event) {
       console.log("Entry updated");
-  };
+    };
     //Fail
     requestPut.onerror = function (event) {
       console.log('There Was An Error!');
@@ -320,26 +319,26 @@ function saveEditedEntry(entryID) {
   };
 } // end saveEditedEntry
 
-function deleteWarn(entryID){
+function deleteWarn(entryID) {
   console.log("deleteWarn entryID = " + entryID);
   var entryDelete = confirm("This will permanently delete the entry!!");
-  if(entryDelete === true){
+  if (entryDelete === true) {
     console.log("deleteWarn confirm accepted with entryID = " + entryID);
-  deleteEntry(entryID);
+    deleteEntry(entryID);
   }
 }
 
 
-function deleteEntry(entryID){
+function deleteEntry(entryID) {
   console.log("deleteEntry with entryID = " + entryID);
   var deleteRecord = entryID;
-  var transaction = db.transaction(["entries"],"readwrite");
+  var transaction = db.transaction(["entries"], "readwrite");
 
-	var store = transaction.objectStore("entries");
-	var request = store.delete(deleteRecord);
+  var store = transaction.objectStore("entries");
+  var request = store.delete(deleteRecord);
 
-	request.onsuccess = function(event){
-		window.location.href="index.html";
-	}
-  
+  request.onsuccess = function (event) {
+    window.location.href = "index.html";
+  }
+
 }
