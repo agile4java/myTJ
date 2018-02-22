@@ -1,31 +1,77 @@
 <!-- We don't need full layout here, because this page will be parsed with Ajax-->
 <!-- Top Navbar-->
 <div class="navbar">
-  <div class="navbar-inner">
-    <div class="left">
-      <a href="#" class="back link">
-        <i class="icon icon-back"></i>
-        <span>Back</span>
-      </a>
+    <div class="navbar-inner">
+      
+      <div class="center sliding myTJ-text">Edit Entry</div>
     </div>
-    <div class="center sliding">Entry</div>
   </div>
-</div>
-<div class="pages">
-  <!-- Page, data-page contains page name-->
-  <div data-page="entry" class="page">
-    <!-- Scrollable page content-->
-    <div class="page-content">
-      <div class="content-block">
-        <div class="content-block-inner">
-          <h3 id="entryTitle"></h3>
-          <p>
-            <strong>Entered on</strong>
-            <span id="entryDate"></span>
-          </p>
-          <div id="entryBody"></div>
+  <div class="pages">
+    <!-- Page, data-page contains page name-->
+    <div data-page="entry" class="page">
+      <!-- Scrollable page content-->
+      <div class="page-content myTJ-primary">
+          <div class="snackbar">This is the Snackbar</div>
+          <button class="button" onclick="mySnackbar('something different')">Toggle Snackbar</button>
+        <div class="content-block-title myTJ-text">Edit Entry Content Below</div>
+        <form id="entryPageForm" onsubmit="saveEditedEntry('newText')">
+          <div class="list-block">
+            <ul>
+              <li>
+                  <div class="item-content myTJ-secondary">
+                      <div class="item-inner">
+                        <div class="item-title label">Date</div>
+                        <div class="item-input" id="entryDate">
+                          <input type="date" id="datePicker" />
+                        </div>
+                      </div>
+                    </div>
+              </li>
+              <li>
+                <div class="item-content myTJ-secondary">
+                  <div class="item-inner">
+                    <div class="item-title label">Title</div>
+                    <div class="item-input" id="entryTitle" >
+                      <input type="text" />
+                    </div>
+                  </div>
+                </div>
+              </li>
+              <li>
+                <div class="item-content myTJ-secondary">
+                  <div class="item-inner">
+                    <div class="item-title label">Body</div>
+                    <div class="item-input">
+                      <textarea class="item-input" id="entryBody"></textarea>
+                    </div>
+                  </div>
+                </div>
+              </li>
+  
+            </ul>
+          </div>
+          <div class="content-block">
+            <div class="row">
+              <div class="col-50">
+                <a href="index.html" class="button button-big button-fill color-red">Cancel</a>
+              </div>
+              <div class="col-50">
+                <input type="submit" value="Submit" class="button button-big button-fill color-green" />
+              </div>
+            </div>
+          </div>
+        </form>
+      </div>
+      <div class="toolbar myTJ-primary-dark">
+        <div class="toolbar-inner myTJ-primary-dark">
+          <!-- Toolbar links -->
+          <div class="left">
+            <a href="#" class="back link">
+              <i class="icon icon-back"></i>
+              <span class="myTJ-text">Back</span>
+            </a>
+          </div>
         </div>
       </div>
     </div>
   </div>
-</div>

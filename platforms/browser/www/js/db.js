@@ -1,3 +1,5 @@
+var entriesArray = [];
+
 var request = indexedDB.open('myTJ', 1);
 
 request.onupgradeneeded = function (event) {
@@ -8,10 +10,10 @@ request.onupgradeneeded = function (event) {
   if (!db.objectStoreNames.contains('entries')) {
     var entriesOS = db.createObjectStore('entries', { keyPath: 'id', autoIncrement: true });
 
+    entriesOS.createIndex('id', 'id', { unique: true });
     entriesOS.createIndex('title', 'title', { unique: false });
     entriesOS.createIndex('date', 'date', { unique: false });
-    entriesOS.createIndex('imgSource', 'imgSource', { unique: false });
-    entriesOS.createIndex('body', 'body', { unique: false });
+
   }
 }
 
@@ -56,16 +58,12 @@ function addEntry(noteType) {
   var date = $('#datePicker').val();
   if (noteType === "newPicture") {
     var imgSource = $('#newPic').attr('src');
-    
-        //-----------------------------------Test Code Below-----------------------------
-        quickLogImage(imgSource);
-        //-----------------------------------Test Code Above -----------------------------
-        
-  }
-  if (noteType === "newText") {
+  } else if (noteType === "newText") {
     var imgSource = null;
   }
   var body = $('#body').val();
+
+
   var transaction = db.transaction(['entries'], 'readwrite');
   var store = transaction.objectStore('entries');
   //Define Store
@@ -94,6 +92,10 @@ function addEntry(noteType) {
 function getEntries() {
   mySnackbar("Getting Entries....");
   // noteLogging("Getting entries...");
+  while (entriesArray.length > 0) {
+    entriesArray.pop();
+  }
+  mySnackbar("EntriesArray length = " + entriesArray.length);
 
 
   // var transaction = db.transaction(['entries'], 'readonly');
@@ -113,7 +115,7 @@ function getEntries() {
     body: body
   };
 
-  var entriesArray = [];
+
 
   var transaction = db.transaction(['entries'], "readonly");
   var objectStore = transaction.objectStore('entries');
@@ -123,13 +125,15 @@ function getEntries() {
     var cursor = event.target.result;
     if (cursor) {
       var entry = {
+        id: id,
         noteType: noteType,
         title: title,
         date: date,
         imgSource: imgSource,
         body: body
       };
-  
+
+      entry.id = cursor.value.id;
       entry.noteType = cursor.value.noteType;
       entry.title = cursor.value.title;
       entry.date = cursor.value.date;
@@ -138,19 +142,36 @@ function getEntries() {
 
 
       entriesArray.push(entry);
+      id++;
       cursor.continue();
 
     } else {
       var output = '';
       for (j = 0; j < entriesArray.length; j++) {
-       
-        
+
+
         if (entriesArray[j].noteType === "newPicture") {
-          
-        //-----------------------------------Test Code Below-----------------------------
-       mySnackbar("entriesArray imgSource = " + entriesArray[j].imgSource);
-        //-----------------------------------Test Code Above -----------------------------
-        
+
+          //-----------------------------------Test Code Below-----------------------------
+          mySnackbar("getEntries: entry " + entriesArray[j].id + " of " + entriesArray.length);
+
+          //  output += '<li><a onclick="getEntry(' + cursor.value.id + ')" href="entry.html" class="item-link">' +
+          //  '<div class="item-content">' +
+          //  '<div class="item-inner"> ' +
+          //  '<div class="item-title">' + cursor.value.title + '</div>' +
+          //  '</div>' +
+          //  '</div></a></li>';
+
+          //  <div class="row">
+          // <div class="col-50">
+          //   <div id="edit-btn"></div>
+          // </div>
+          // <div class="col-50">
+          //   <div id="delete-btn"></div>
+          //   </div>
+          //   </div>
+          //-----------------------------------Test Code Above -----------------------------
+
           var newCard = document.createElement("div");
           newCard.innerHTML =
             '<div class="card myTJ-secondary">' +
@@ -158,15 +179,25 @@ function getEntries() {
             '      <h2>' + entriesArray[j].title + '</h2>' +
             '   </div>' +
             '   <div class="card-content card-content-padding"> ' +
-            '       <img src="'+ entriesArray[j].imgSource + '" class="notePicture"></img>' +
+            '       <img src="' + entriesArray[j].imgSource + '" class="notePicture"></img>' +
             '      <h2 class="myTJ-secondary myTJ-text-dark">' + entriesArray[j].body + '</h2>' +
             '   </div> ' +
             '   <div class="card-footer myTJ-secondary-dark myTJ-text">' +
-            '      Posted on ' + entriesArray[j].date +
+            '   <div class="col-50 myTJ-secondary-dark myTJ-text">' +
+            '    <div="col-50">Posted on ' + entriesArray[j].date +
             '   </div> ' +
+            '   <div class="col-50 myTJ-secondary-dark myTJ-text">' +
+            '       <button onclick="getPicEntry(' + entriesArray[j].id + ')"' +
+            '          id="edit-btn" href="pic-entry.html">Edit Entry' +
+            '       </button>' +
+            '      </div>' +
             '</div>';
-            $("#entryList").append(newCard);
+          $("#entryList").append(newCard);
         } else {
+          //-----------------------------------Test Code Below-----------------------------
+          mySnackbar("getEntries: entry " + entriesArray[j].id + " of " + entriesArray.length);
+          //-----------------------------------Test Code Above -----------------------------
+
           var newCard = document.createElement("div");
           newCard.innerHTML =
             '<div class="card myTJ-secondary">' +
@@ -177,8 +208,13 @@ function getEntries() {
             '      <h2 class="myTJ-secondary myTJ-text-dark">' + entriesArray[j].body + '</h2>' +
             '   </div> ' +
             '   <div class="card-footer myTJ-secondary-dark myTJ-text">' +
-            '      Posted on ' + entriesArray[j].date +
+            '   <div class="col-50 myTJ-secondary-dark myTJ-text">' +
+            '    <div="col-50">Posted on ' + entriesArray[j].date +
             '   </div> ' +
+            '   <div class="col-50 myTJ-secondary-dark myTJ-text">' +
+            '       <a class="item-link" onclick="getEntry(' + entriesArray[j].id + ')"' +
+            '          id="edit-btn" href="entry.html">Edit Entry' +
+            '      </div>' +
             '</div>';
           $("#entryList").append(newCard);
         } // end else of make newCard
@@ -192,12 +228,49 @@ function getEntries() {
 
 // Get Entry
 function getEntry(entryID) {
+
   myTJ.onPageInit('entry', function (page) {
+
+    //
+    var id = entryID;
+    var transaction = db.transaction(['entries'], 'readonly');
+    var store = transaction.objectStore('entries');
+    var request = store.get(entryID);
+    var onSubCall = "saveEditedEntry(" + entryID + ")";
+    console.log("onSubCall var in getEntry for onsubmit button = " + onSubCall);
+
+    request.onsuccess = function (event) {
+      $$('#entryTitle').html(request.result.title);
+      $$('#entryDate').html(request.result.date);
+      $$('#entryBody').html(request.result.body);
+      $$('#entryPageForm').attr('onsubmit', "saveEditedEntry(' + entryID + ')");
+    };
+  });
+  //
+
+  //-----------------------------------Test Code Below-----------------------------
+  mySnackbar("getEntry.onsuccess.id  = " + entryID);
+  console.log("gettingEntry for edit with id  = " + entryID);
+  //-----------------------------------------------Test Code Above--------------------
+
+
+}
+
+// Get Picture Entry
+function getPicEntry(entryID) {
+
+  myTJ.onPageInit('pic-entry', function (page) {
     var transaction = db.transaction(['entries'], 'readonly');
     var store = transaction.objectStore('entries');
     var request = store.get(entryID);
 
     request.onsuccess = function (event) {
+
+      //-----------------------------------Test Code Below-----------------------------
+      mySnackbar("getEntry.onsuccess.id  = " + entryID);
+      console.log("gettingEntry for edit with id  = " + entryID);
+      //-----------------------------------------------Test Code Above--------------------
+
       $('#entryTitle').html(request.result.title);
       $('#entryDate').html(request.result.date);
       $('#entryBody').html(request.result.body);
@@ -206,15 +279,28 @@ function getEntry(entryID) {
 }
 
 // Clear the database
-function clearDB(){
+function clearDB() {
 
   var transaction = db.transaction(['entries'], "readwrite");
   var objectStore = transaction.objectStore('entries');
 
   var objectStoreRequest = objectStore.clear();
 
-  objectStoreRequest.onsuccess = function(event){
+  objectStoreRequest.onsuccess = function (event) {
     mySnackbar("Database Cleared");
   };
+}
+
+// Put an edited Entry
+function saveEditedEntry(entryID) {
+
+
+  //-----------------------------------Test Code Below-----------------------------
+  console.log("Entered saveEditedEntry with entryID = " + entryID);
+  //-----------------------------------Test Code Above ----------------------------- 
+
+
+
+
 }
 

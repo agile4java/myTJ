@@ -34,10 +34,13 @@ function mySnackbar(newText) {
     // Add the "show" class to DIV
     x.toggleClass('show');
 
-    setTimeout(function(){ x.toggleClass('show'); }, 3000);
+    setTimeout(function(){ x.toggleClass('show'); }, 2000);
     
 }
 
+myTJ.onPageInit("index", function (page) {
+   getEntries();
+});
 myTJ.onPageInit("new-entry", function (page) {
    mySnackbar("New Text Note");
 });
