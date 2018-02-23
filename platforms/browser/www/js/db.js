@@ -28,9 +28,7 @@ request.onsuccess = function (event) {
 
   });
 
-  myTJ.onPageInit('new-entry', function (page) {
 
-  });
 
   myTJ.onPageInit('new-entry', function (page) {
     // Get Formatted Current Date
