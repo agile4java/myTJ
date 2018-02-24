@@ -1,0 +1,28 @@
+{
+  "name": "mytjv6",
+  "version": "1.0.0",
+  "description": "my travel journal app",
+  "main": "my-app.js",
+  "dependencies": {
+    "cordova-android": "^7.0.0",
+    "cordova-browser": "^5.0.3",
+    "cordova-plugin-camera": "^4.0.2",
+    "cordova-plugin-whitelist": "^1.3.3",
+    "envs": "^0.1.6",
+    "framework7": "^2.0.10"
+  },
+  "devDependencies": {},
+  "scripts": {
+    "test": "echo \"Error: no test specified\" && exit 1"
+  },
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/agile4java/myTJ.git"
+  },
+  "author": "Chad Conway",
+  "license": "MIT",
+  "bugs": {
+    "url": "https://github.com/agile4java/myTJ/issues"
+  },
+  "homepage": "https://github.com/agile4java/myTJ#readme"
+}
