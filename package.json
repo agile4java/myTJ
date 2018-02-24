@@ -6,8 +6,9 @@
   "dependencies": {
     "cordova-android": "^7.0.0",
     "cordova-browser": "^5.0.3",
-    "cordova-plugin-camera": "^4.0.2",
-    "cordova-plugin-whitelist": "^1.3.3",
+    "cordova-plugin-camera": "~4.0.2",
+    "cordova-plugin-file": "~6.0.1",
+    "cordova-plugin-whitelist": "~1.3.3",
     "envs": "^0.1.6",
     "framework7": "^2.0.10"
   },
@@ -24,5 +25,16 @@
   "bugs": {
     "url": "https://github.com/agile4java/myTJ/issues"
   },
-  "homepage": "https://github.com/agile4java/myTJ#readme"
+  "homepage": "https://github.com/agile4java/myTJ#readme",
+  "cordova": {
+    "plugins": {
+      "cordova-plugin-camera": {},
+      "cordova-plugin-whitelist": {},
+      "cordova-plugin-file": {}
+    },
+    "platforms": [
+      "browser",
+      "android"
+    ]
+  }
 }
