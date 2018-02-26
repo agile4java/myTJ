@@ -1,0 +1,77 @@
+<!-- We don't need full layout here, because this page will be parsed with Ajax-->
+<!-- Top Navbar-->
+<div class="navbar">
+  <div class="navbar-inner">
+    
+    <div class="center sliding myTJ-text">New Text Entry</div>
+  </div>
+</div>
+<div class="pages">
+  <!-- Page, data-page contains page name-->
+  <div data-page="new-entry" class="page">
+    <!-- Scrollable page content-->
+    <div class="page-content myTJ-primary">
+        <div class="snackbar">This is the Snackbar</div>
+     
+      <div class="content-block-title myTJ-text">New Entry</div>
+      <form onsubmit="addEntry('newText')">
+        <div class="list-block">
+          <ul>
+            <li>
+                <div class="item-content myTJ-secondary">
+                    <div class="item-inner">
+                      <div class="item-title label">Date</div>
+                      <div class="item-input">
+                        <input type="date" id="datePicker" />
+                      </div>
+                    </div>
+                  </div>
+            </li>
+            <li>
+              <div class="item-content myTJ-secondary">
+                <div class="item-inner">
+                  <div class="item-title label">Title</div>
+                  <div class="item-input">
+                    <input type="text" id="title" placeholder="Enter title" />
+                  </div>
+                </div>
+              </div>
+            </li>
+            <li>
+              <div class="item-content myTJ-secondary">
+                <div class="item-inner">
+                  <div class="item-title label">Body</div>
+                  <div class="item-input">
+                    <textarea id="body"></textarea>
+                  </div>
+                </div>
+              </div>
+            </li>
+
+          </ul>
+        </div>
+        <div class="content-block">
+          <div class="row">
+            <div class="col-50">
+              <a href="#" class="button button-big button-fill color-red">Cancel</a>
+            </div>
+            <div class="col-50">
+              <input type="submit" value="Submit" class="button button-big button-fill color-green" />
+            </div>
+          </div>
+        </div>
+      </form>
+    </div>
+    <div class="toolbar myTJ-primary-dark">
+      <div class="toolbar-inner myTJ-primary-dark">
+        <!-- Toolbar links -->
+        <div class="left">
+          <a href="#" class="back link">
+            <i class="icon icon-back"></i>
+            <span class="myTJ-text">Back</span>
+          </a>
+        </div>
+      </div>
+    </div>
+  </div>
+</div>
